@@ -9,6 +9,17 @@ import FallingLeaves from '../components/FallingLeaves.astro';
 import headerImage from '../assets/header.jpg';
 import cornerBorder from '../assets/corner-boder.png';
 
+// Photo imports
+import photo1 from '../assets/photos/IMG_8556.jpg';
+import photo9 from '../assets/photos/IMG_8565.jpg';
+import photo2 from '../assets/photos/_MG_0396.jpg';
+import photo3 from '../assets/photos/_MG_0410.jpg';
+import photo4 from '../assets/photos/IMG_7830.jpg';
+import photo5 from '../assets/photos/IMG_7916.jpg';
+import photo6 from '../assets/photos/IMG_8001.jpg';
+import photo7 from '../assets/photos/IMG_8006-Enhanced-NR.jpg';
+import photo8 from '../assets/photos/IMG_8089-Enhanced-NR.jpg';
+
 // You can customize these values
 const weddingDetails = {
 	// Header image (inside the white frame)
@@ -29,12 +40,15 @@ const weddingDetails = {
 
 // Add your photos here (leave empty for placeholders)
 const photos = [
-	{ alt: "First date" },
-	{ alt: "Proposal" },
-	{ alt: "Engagement" },
-	{ alt: "Adventures together" },
-	{ alt: "With family" },
-	{ alt: "Our love story" }
+	{ src: photo1.src, alt: "First date" },
+	{ src: photo2.src, alt: "Proposal" },
+	{ src: photo3.src, alt: "Engagement" },
+	{ src: photo4.src, alt: "Adventures together" },
+	{ src: photo5.src, alt: "With family" },
+	{ src: photo6.src, alt: "Our love story" },
+	{ src: photo7.src, alt: "Beautiful moments" },
+	{ src: photo8.src, alt: "Together forever" },
+	{ src: photo9.src, alt: "Together forever" }
 ];
 ---
 
@@ -119,15 +133,31 @@ const photos = [
 </style>
 
 <script>
-	// Read URL parameters client-side
+	// Read base64 encoded guest parameter from URL
 	const urlParams = new URLSearchParams(window.location.search);
-	const guestId = urlParams.get('id');
-	const guestName = urlParams.get('name');
+	const encodedGuest = urlParams.get('guest');
 
-	// If parameters are missing, redirect to 404
-	if (!guestId || !guestName) {
-		window.location.href = '/404';
-	} else {
+	// Decode and parse the guest data
+	let guestId = null;
+	let guestName = null;
+
+	try {
+		if (!encodedGuest) {
+			throw new Error('Missing guest parameter');
+		}
+
+		// Decode from base64
+		const decodedData = atob(encodedGuest);
+		const guestData = JSON.parse(decodedData);
+
+		guestId = guestData.id;
+		guestName = guestData.name;
+
+		// Validate that both id and name exist
+		if (!guestId || !guestName) {
+			throw new Error('Invalid guest data');
+		}
+
 		// Display the guest name
 		const guestNameElement = document.getElementById('guestNameDisplay');
 		if (guestNameElement) {
@@ -137,5 +167,8 @@ const photos = [
 
 		// Store guest ID for potential future use (e.g., RSVP tracking)
 		sessionStorage.setItem('guestId', guestId);
+	} catch (error) {
+		// If decoding fails or data is invalid, redirect to 404
+		window.location.href = '/404';
 	}
 </script>
