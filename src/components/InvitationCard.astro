@@ -1,0 +1,681 @@
+---
+import RsvpModal from './RsvpModal.astro';
+import headerPlaceholder from '../assets/header-placeholder.svg';
+import smallSunflower from '../assets/small-sunflower.svg';
+import footerDecoration from '../assets/footer-decoration.svg';
+
+interface Props {
+	bride?: string;
+	groom?: string;
+	date?: string;
+	time?: string;
+	venue?: string;
+	address?: string;
+	rsvpDate?: string;
+	headerImage?: string;
+	headerTitle?: string;
+	headerSubtitle?: string;
+	headerAlt?: string;
+	guestName?: string;
+	guestId?: string;
+}
+
+const {
+	bride = "Alejandro",
+	groom = "Abigail",
+	date = "Domingo, 25 de Enero, 2026",
+	time = "4:00 PM",
+	venue = "Casa Aragon",
+	address = "KM. 16, Autopista Medellín, El Rosal, Cundinamarca",
+	rsvpDate = "15 de Noviembre",
+	headerImage = "",
+	headerTitle = "Save The Date",
+	headerSubtitle = "Join us in celebrating our special day",
+	headerAlt = "Wedding celebration",
+	guestName = "",
+	guestId = ""
+} = Astro.props;
+---
+
+<div class="invitation-card">
+	<div class="card-border">
+		<div class="card-content">
+			<!-- Header Image Section -->
+			<div class="card-header-image">
+				<div class="header-image-container">
+					{headerImage ? (
+						<img src={headerImage} alt={headerAlt} class="header-image" />
+					) : (
+						<div class="header-placeholder">
+							<img src={headerPlaceholder.src} alt="Wedding placeholder" />
+						</div>
+					)}
+					<div class="header-overlay"></div>
+				</div>
+
+				<div class="header-text-overlay">
+					<h1 class="header-title">{headerTitle}</h1>
+					<div class="header-divider">
+						<span class="header-line"></span>
+						<span class="header-icon">❋</span>
+						<span class="header-line"></span>
+					</div>
+					<p class="header-subtitle">{headerSubtitle}</p>
+					
+				</div>
+			</div>
+
+			<h1 class="invitation-title">¡Estás invitado!</h1>
+
+			<!-- Guest name populated client-side from URL parameters -->
+			<p class="guest-name" id="guestNameDisplay" style="display: none;"></p>
+
+			<div class="divider">
+				<span class="divider-line"></span>
+				<span class="divider-icon">❋</span>
+				<span class="divider-line"></span>
+			</div>
+
+			<p class="invitation-subtitle">A celebrar el matrimonio de:</p>
+
+			<h2 class="couple-names">
+				<span class="name">{bride}</span>
+				<span class="ampersand">&</span>
+				<span class="name">{groom}</span>
+			</h2>
+
+			<div class="event-details">
+				<div class="detail-item">
+					<span class="detail-label">Fecha</span>
+					<span class="detail-value">{date}</span>
+				</div>
+
+				<div class="detail-item">
+					<span class="detail-label">Hora</span>
+					<span class="detail-value">{time}</span>
+				</div>
+
+				<div class="detail-item">
+					<span class="detail-label">Lugar</span>
+					<span class="detail-value"><a href="https://maps.app.goo.gl/9DbkXW2KwuvnBEE39">{venue}</a></span>
+					<span class="detail-address">{address}</span>
+				</div>
+			</div>
+
+			<div class="divider">
+				<span class="divider-line"></span>
+				<span class="divider-icon">❋</span>
+				<span class="divider-line"></span>
+			</div>
+
+			<!-- Dress Code Section -->
+			<div class="info-section">
+				<h3 class="info-title">Código de Vestimenta</h3>
+				<p class="info-text">No se permite verde oliva ni blanco</p>
+			</div>
+
+			<!-- Guest Policy Section -->
+			<div class="info-section">
+				<h3 class="info-title">Nota Importante</h3>
+				<p class="info-text">No traer niños, únicamente las personas en la tarjeta.</p>
+			</div>
+
+			<div class="divider">
+				<span class="divider-line"></span>
+				<span class="divider-icon">❋</span>
+				<span class="divider-line"></span>
+			</div>
+
+			<p class="rsvp-text">Por favor confirmar antes del {rsvpDate}</p>
+
+			<button class="rsvp-button" id="openRsvpModal">
+				Confirmar Asistencia
+			</button>
+
+			<!-- Slot for additional content like carousel -->
+			<slot />
+
+			<div class="footer-decoration">
+				<img src={footerDecoration.src} alt="Footer decoration" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- RSVP Modal Component -->
+<RsvpModal />
+
+<script>
+	// Open RSVP Modal when button is clicked
+	const openBtn = document.getElementById('openRsvpModal');
+
+	if (openBtn) {
+		openBtn.addEventListener('click', () => {
+			// Dispatch custom event that the modal will listen for
+			document.dispatchEvent(new CustomEvent('openRsvpModal'));
+		});
+	}
+</script>
+
+<style>
+	.invitation-card {
+		position: relative;
+		z-index: 10;
+		max-width: 500px;
+		width: 100%;
+		opacity: 0;
+		transform: translateY(30px);
+		animation: slideUp 1s ease-out forwards;
+		animation-delay: 0.5s;
+	}
+
+	.card-border {
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 20px;
+		padding: 3px;
+		box-shadow:
+			0 10px 40px rgba(0, 0, 0, 0.1),
+			0 0 0 1px rgba(95, 113, 97, 0.1);
+	}
+
+	.card-content {
+		background: linear-gradient(to bottom, rgba(255, 248, 231, 0.98), rgba(255, 255, 255, 0.98));
+		border-radius: 18px;
+		padding: 0;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Header Image Section */
+	.card-header-image {
+		position: relative;
+		width: 100%;
+		height: 350px;
+		border-radius: 18px 18px 0 0;
+		overflow: hidden;
+		margin-bottom: 2rem;
+	}
+
+	.header-image-container {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.header-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+	}
+
+	.header-placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #FFF8E7 0%, #F5E6D3 100%);
+	}
+
+	.header-placeholder img {
+		width: 100%;
+		height: 100%;
+		max-width: 400px;
+	}
+
+	.header-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0.25) 0%,
+			rgba(0, 0, 0, 0.35) 50%,
+			rgba(0, 0, 0, 0.45) 100%
+		);
+	}
+
+	.header-text-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: end;
+		z-index: 2;
+		padding: 1rem;
+	}
+
+	.header-decoration-top {
+		margin-bottom: 1rem;
+		opacity: 0;
+		animation: fadeInScale 1s ease-out forwards;
+		animation-delay: 0.7s;
+	}
+
+	.header-decoration-top svg {
+		width: 60px;
+		height: 60px;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+	}
+
+	.header-title {
+		font-family: 'Cormorant Garamond', serif;
+		font-size: 3.5rem;
+		font-weight: 500;
+		color: white;
+		margin: 0 0 0.5rem;
+		letter-spacing: 2.5px;
+		text-shadow:
+			0 2px 10px rgba(0, 0, 0, 0.6),
+			0 4px 20px rgba(0, 0, 0, 0.4);
+		line-height: 1.1;
+	}
+
+	.header-subtitle {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1.2rem;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.95);
+		margin: 0 0 1.5rem;
+		letter-spacing: 2px;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+	}
+
+	.header-divider {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.8rem;
+	}
+
+	.header-line {
+		height: 2px;
+		width: 60px;
+		background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8), transparent);
+	}
+
+	.header-icon {
+		color: #FFB300;
+		font-size: 1.3rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+	}
+
+	/* Padding for rest of content */
+	.invitation-title {
+		padding: 0 1.0rem;
+	}
+
+	.divider,
+	.invitation-subtitle,
+	.couple-names,
+	.event-details,
+	.rsvp-text {
+		padding: 0 2.5rem;
+	}
+
+	.header-decoration,
+	.footer-decoration {
+		padding: 0 2.5rem;
+	}
+
+	.invitation-title {
+		font-family: 'Cormorant Garamond', serif;
+		font-size: 3.5rem;
+		font-weight: 400;
+		color: #4A5C4E;
+		margin: 0.5rem 0 0.5rem;
+		letter-spacing: 2px;
+	}
+
+	.guest-name {
+		font-family: 'Cormorant Garamond', serif;
+		font-size: 2rem;
+		font-weight: 400;
+		color: #2D9B91;
+		margin: 0.5rem 0 0.5rem;
+		padding: 0 2.5rem;
+		letter-spacing: 1px;
+		font-style: italic;
+	}
+
+	.invitation-subtitle {
+		font-size: 1.1rem;
+		color: #6B5A45;
+		margin: 1.5rem 0;
+		font-weight: 400;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+	}
+
+	.couple-names {
+		font-family: 'Great Vibes', cursive;
+		font-size: 4.5rem;
+		font-weight: 400;
+		color: #6B5A45;
+		margin: 1.5rem 0 2rem;
+		line-height: 1.2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3rem;
+	}
+
+	.couple-names .name {
+		display: inline-block;
+	}
+
+	.couple-names .name:first-child {
+		transform: translate(-1.0rem, -1.5rem);
+	}
+
+	.couple-names .name:last-child {
+		transform: translate(1.0rem, 1.5rem);
+	}
+
+	.couple-names .ampersand {
+		font-family: 'Cormorant Garamond', serif;
+		font-size: 2.5rem;
+		color: #2D9B91;
+		font-style: italic;
+		line-height: 0.8;
+		margin: 0 0.5rem;
+	}
+
+	.divider {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0.5rem 0;
+		gap: 1rem;
+	}
+
+	.divider-line {
+		height: 1px;
+		width: 80px;
+		background: linear-gradient(to right, transparent, var(--sage-green), transparent);
+	}
+
+	.divider-icon {
+		color: var(--sunflower-yellow);
+		font-size: 1.2rem;
+	}
+
+	.event-details {
+		margin: 2.5rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.detail-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	.detail-label {
+		font-size: 0.95rem;
+		color: #2D9B91;
+		font-weight: 500;
+		letter-spacing: 2.5px;
+		text-transform: uppercase;
+	}
+
+	.detail-value {
+		font-family: 'Cormorant Garamond', serif;
+		font-size: 1.75rem;
+		color: #6B5A45;
+		font-weight: 500;
+	}
+
+	.detail-address {
+		font-size: 1.05rem;
+		color: #6B8368;
+		font-weight: 400;
+		margin-top: 0.2rem;
+	}
+
+	.info-section {
+		padding: 0 2.5rem;
+		margin: 1.5rem 0;
+		text-align: center;
+	}
+
+	.info-title {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.95rem;
+		color: #2D9B91;
+		font-weight: 500;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		margin: 0 0 0.5rem;
+	}
+
+	.info-text {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1rem;
+		color: #6B5A45;
+		font-weight: 400;
+		line-height: 1.6;
+		margin: 0;
+		font-style: italic;
+	}
+
+	.rsvp-text {
+		font-size: 1.15rem;
+		color: #4A5C4E;
+		font-weight: 400;
+		margin: 1.5rem 0 1rem;
+		letter-spacing: 0.5px;
+	}
+
+	/* RSVP Button */
+	.rsvp-button {
+		margin: 1.5rem 2.5rem 2rem;
+		padding: 0.9rem 2.5rem;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 1rem;
+		font-weight: 500;
+		color: white;
+		background: linear-gradient(135deg, #2D9B91 0%, #40B5AD 100%);
+		border: none;
+		border-radius: 50px;
+		cursor: pointer;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		box-shadow: 0 4px 15px rgba(45, 155, 145, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.rsvp-button:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(45, 155, 145, 0.4);
+		background: linear-gradient(135deg, #249187 0%, #379FA3 100%);
+	}
+
+	.rsvp-button:active {
+		transform: translateY(0);
+	}
+
+	.header-decoration,
+	.footer-decoration {
+		display: flex;
+		justify-content: center;
+		opacity: 0.9;
+	}
+
+	.header-decoration img {
+		width: 60px;
+		height: auto;
+	}
+
+	.footer-decoration {
+		padding-bottom: 2.5rem !important;
+	}
+
+	.footer-decoration img {
+		width: 200px;
+		height: auto;
+		margin-top: 1rem;
+	}
+
+	@keyframes slideUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fadeInScale {
+		from {
+			opacity: 0;
+			transform: scale(0.8) rotate(-10deg);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1) rotate(0deg);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.card-header-image {
+			height: 280px;
+		}
+
+		.header-title {
+			font-size: 2.8rem;
+		}
+
+		.header-subtitle {
+			font-size: 1rem;
+		}
+
+		.header-decoration-top img {
+			width: 50px;
+			height: 50px;
+		}
+
+		.divider,
+		.invitation-subtitle,
+		.couple-names,
+		.event-details,
+		.info-section,
+		.rsvp-text,
+		.header-decoration,
+		.footer-decoration,
+		.invitation-title,
+		.guest-name {
+			padding: 0 1.5rem;
+		}
+
+		.rsvp-button {
+			margin: 1.5rem 1.5rem 2rem;
+		}
+
+		.footer-decoration {
+			padding-bottom: 2rem !important;
+		}
+
+		.invitation-title {
+			font-size: 2.2rem;
+		}
+
+		.guest-name {
+			font-size: 1.6rem;
+		}
+
+		.couple-names {
+			font-size: 3.5rem;
+		}
+
+		.couple-names .name:first-child {
+			transform: translate(-1rem, -1rem);
+		}
+
+		.couple-names .name:last-child {
+			transform: translate(1rem, 1rem);
+		}
+
+		.couple-names .ampersand {
+			font-size: 2rem;
+			line-height: 0.8;
+		}
+
+		.detail-value {
+			font-size: 1.2rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.card-header-image {
+			height: 240px;
+		}
+
+		.header-title {
+			font-size: 2.2rem;
+			letter-spacing: 1.5px;
+		}
+
+		.header-subtitle {
+			font-size: 0.9rem;
+			letter-spacing: 1.5px;
+		}
+
+		.header-decoration-top img {
+			width: 40px;
+			height: 40px;
+		}
+
+		.header-line {
+			width: 40px;
+		}
+
+		.invitation-title {
+			font-size: 1.8rem;
+		}
+
+		.guest-name {
+			font-size: 1.3rem;
+		}
+
+		.couple-names {
+			font-size: 2.8rem;
+		}
+
+		.couple-names .name {
+			display: block;
+			margin: 0.2rem 0;
+		}
+
+		.couple-names .name:first-child {
+			transform: translate(-0.2rem, -0.7rem);
+		}
+
+		.couple-names .name:last-child {
+			transform: translate(0.2rem, 0.7rem);
+		}
+
+		.couple-names .ampersand {
+			display: block;
+			font-size: 1.5rem;
+			margin: 0.3rem 0;
+			line-height: 0.8;
+		}
+
+		.divider-line {
+			width: 50px;
+		}
+
+		.rsvp-button {
+			font-size: 0.9rem;
+			padding: 0.8rem 2rem;
+		}
+	}
+</style>

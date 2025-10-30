@@ -1,0 +1,18 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+	<!-- Main vine flowing from bottom right -->
+	<path d="M190,190 Q160,165 140,145 Q125,130 108,110 Q95,95 85,82" stroke="#5F7161" stroke-width="2.5" fill="none" opacity="0.85"/>
+	<!-- Side tendrils -->
+	<path d="M160,165 Q168,160 165,152" stroke="#5F7161" stroke-width="1.5" fill="none" opacity="0.7"/>
+	<path d="M125,130 Q118,128 115,120" stroke="#5F7161" stroke-width="1.5" fill="none" opacity="0.7"/>
+	<path d="M95,95 Q100,88 97,80" stroke="#5F7161" stroke-width="1.5" fill="none" opacity="0.7"/>
+	<!-- Leaves along the vine -->
+	<ellipse cx="165" cy="170" rx="10" ry="14" fill="#9CAF88" opacity="0.9" transform="rotate(40 165 170)"/>
+	<ellipse cx="148" cy="152" rx="9" ry="13" fill="#7A9B76" opacity="0.85" transform="rotate(-25 148 152)"/>
+	<ellipse cx="135" cy="138" rx="11" ry="15" fill="#9CAF88" opacity="0.9" transform="rotate(15 135 138)"/>
+	<ellipse cx="115" cy="120" rx="8" ry="12" fill="#9CAF88" opacity="0.85" transform="rotate(-35 115 120)"/>
+	<ellipse cx="102" cy="105" rx="10" ry="14" fill="#7A9B76" opacity="0.9" transform="rotate(20 102 105)"/>
+	<ellipse cx="90" cy="88" rx="9" ry="13" fill="#9CAF88" opacity="0.8" transform="rotate(-15 90 88)"/>
+	<!-- Small detail leaves -->
+	<ellipse cx="168" cy="160" rx="7" ry="10" fill="#7A9B76" opacity="0.75" transform="rotate(-60 168 160)"/>
+	<ellipse cx="120" cy="125" rx="6" ry="9" fill="#9CAF88" opacity="0.7" transform="rotate(50 120 125)"/>
+</svg>

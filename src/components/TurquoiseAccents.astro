@@ -1,0 +1,68 @@
+---
+// Decorative turquoise accent elements
+---
+
+<div class="turquoise-accent accent-1"></div>
+<div class="turquoise-accent accent-2"></div>
+<div class="turquoise-accent accent-3"></div>
+
+<style>
+	.turquoise-accent {
+		position: absolute;
+		border-radius: 50%;
+		background: radial-gradient(circle, var(--turquoise-light), transparent);
+		pointer-events: none;
+		opacity: 0;
+		animation: fadeIn 2s ease-out forwards, pulse 4s ease-in-out infinite;
+	}
+
+	.accent-1 {
+		top: 20%;
+		right: 15%;
+		width: 80px;
+		height: 80px;
+		animation-delay: 1.5s, 3s;
+	}
+
+	.accent-2 {
+		bottom: 25%;
+		left: 12%;
+		width: 60px;
+		height: 60px;
+		animation-delay: 2s, 4s;
+	}
+
+	.accent-3 {
+		top: 60%;
+		right: 20%;
+		width: 50px;
+		height: 50px;
+		animation-delay: 2.5s, 5s;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 0.3;
+		}
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			opacity: 0.3;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.5;
+			transform: scale(1.1);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.turquoise-accent {
+			display: none;
+		}
+	}
+</style>

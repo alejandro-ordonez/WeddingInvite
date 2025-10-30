@@ -1,11 +1,141 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import VineDecoration from '../components/VineDecoration.astro';
+import SunflowerDecoration from '../components/SunflowerDecoration.astro';
+import TurquoiseAccents from '../components/TurquoiseAccents.astro';
+import InvitationCard from '../components/InvitationCard.astro';
+import PhotoCarousel from '../components/PhotoCarousel.astro';
+import FallingLeaves from '../components/FallingLeaves.astro';
+import headerImage from '../assets/header.jpg';
+import cornerBorder from '../assets/corner-boder.png';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// You can customize these values
+const weddingDetails = {
+	// Header image (inside the white frame)
+	headerImage: headerImage.src,
+	headerTitle: "Save The Date",
+	headerSubtitle: "Comparte con nosotros esta fecha especial",
+	headerAlt: "Wedding celebration",
+
+	// Wedding details
+	bride : "Alejandro",
+	groom : "Abigail",
+	date : "Domingo, 25 de Enero, 2026",
+	time : "4:00 PM",
+	venue : "Casa Aragon",
+	address : "KM. 16, Autopista Medellín, El Rosal, Cundinamarca",
+	rsvpDate : "15 de Noviembre",
+};
+
+// Add your photos here (leave empty for placeholders)
+const photos = [
+	{ alt: "First date" },
+	{ alt: "Proposal" },
+	{ alt: "Engagement" },
+	{ alt: "Adventures together" },
+	{ alt: "With family" },
+	{ alt: "Our love story" }
+];
 ---
 
 <Layout>
-	<Welcome />
+	<!-- Falling Leaves Animation -->
+	<FallingLeaves />
+
+	<!-- Corner Borders -->
+	<div class="corner-border corner-top-left" style={`background-image: url(${cornerBorder.src});`}></div>
+	<div class="corner-border corner-bottom-right" style={`background-image: url(${cornerBorder.src});`}></div>
+
+	<div class="invitation-container">
+		<!-- Decorative Elements -->
+		<VineDecoration position="top-left" />
+		<SunflowerDecoration position="top-right" />
+		<SunflowerDecoration position="bottom-left" />
+		<VineDecoration position="bottom-right" />
+		<TurquoiseAccents />
+
+		<!-- Main Content with Header Image and Carousel -->
+		<InvitationCard {...weddingDetails}>
+			<PhotoCarousel photos={photos} title="Nosotros:" />
+		</InvitationCard>
+	</div>
 </Layout>
+
+<style>
+	.corner-border {
+		position: fixed;
+		z-index: 100;
+		width: 350px;
+		height: 350px;
+		pointer-events: none;
+		background-repeat: no-repeat;
+		background-size: contain;
+		opacity: 0.8;
+	}
+
+	.corner-top-left {
+		top: 0;
+		left: 0;
+		background-position: top left;
+		transform: scaleX(-1);
+	}
+
+	.corner-bottom-right {
+		bottom: 0;
+		right: 0;
+		background-position: bottom right;
+		transform: scaleY(-1);
+	}
+
+	.invitation-container {
+		position: relative;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 5rem 2rem;
+		overflow: hidden;
+		z-index: 1;
+	}
+
+	@media (max-width: 768px) {
+		.corner-border {
+			width: 350px;
+			height: 350px;
+		}
+
+		.invitation-container {
+			padding: 2rem 1rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.corner-border {
+			width: 180px;
+			height: 180px;
+		}
+	}
+</style>
+
+<script>
+	// Read URL parameters client-side
+	const urlParams = new URLSearchParams(window.location.search);
+	const guestId = urlParams.get('id');
+	const guestName = urlParams.get('name');
+
+	// If parameters are missing, redirect to 404
+	if (!guestId || !guestName) {
+		window.location.href = '/404';
+	} else {
+		// Display the guest name
+		const guestNameElement = document.getElementById('guestNameDisplay');
+		if (guestNameElement) {
+			guestNameElement.textContent = guestName;
+			guestNameElement.style.display = 'block';
+		}
+
+		// Store guest ID for potential future use (e.g., RSVP tracking)
+		sessionStorage.setItem('guestId', guestId);
+	}
+</script>
