@@ -147,8 +147,15 @@ const photos = [
 		}
 
 		// Decode from base64
-		const decodedData = atob(encodedGuest);
-		const guestData = JSON.parse(decodedData);
+		// Decode Base64 to bytes
+		const decodedBytes = Uint8Array.from(atob(encodedGuest), c => c.charCodeAt(0));
+
+		// Convert bytes to UTF-8 string
+		const utf8String = new TextDecoder("utf-8").decode(decodedBytes);
+
+		// Parse JSON
+		const guestData = JSON.parse(utf8String);
+
 
 		guestId = guestData.id;
 		guestName = guestData.name;
