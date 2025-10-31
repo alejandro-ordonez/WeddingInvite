@@ -108,6 +108,18 @@ const {
 				<span class="divider-line"></span>
 			</div>
 
+			<p class="rsvp-text">Por favor confirmar antes del {rsvpDate}</p>
+
+			<button class="rsvp-button" id="openRsvpModal">
+				Confirmar Asistencia
+			</button>
+
+			<div class="divider">
+				<span class="divider-line"></span>
+				<span class="divider-icon">❋</span>
+				<span class="divider-line"></span>
+			</div>
+
 			<!-- Dress Code Section -->
 			<div class="info-section">
 				<h3 class="info-title">Código de Vestimenta</h3>
@@ -120,17 +132,13 @@ const {
 				<p class="info-text">No traer niños, únicamente las personas en la tarjeta.</p>
 			</div>
 
-			<div class="divider">
-				<span class="divider-line"></span>
-				<span class="divider-icon">❋</span>
-				<span class="divider-line"></span>
+			<!-- Guest Policy Section -->
+			<div class="info-section">
+				<h3 class="info-title">Obsequio</h3>
+				<p class="info-text">¡Lluvia de sobres!</p>
+				<p class="info-text">Tu compañía en nuestro matrimonio es el regalo más valioso que podemos recibir. Pero si deseas tener un detalle agradeceremos un sobrecito con cariño. 
+					Este día no sería igual sin tí, gracias por acompañarnos</p>
 			</div>
-
-			<p class="rsvp-text">Por favor confirmar antes del {rsvpDate}</p>
-
-			<button class="rsvp-button" id="openRsvpModal">
-				Confirmar Asistencia
-			</button>
 
 			<!-- Slot for additional content like carousel -->
 			<slot />
